@@ -1,0 +1,56 @@
+ENTRY(Reset_Handler)
+
+EXTERN(Default_Handler)
+
+PROVIDE(NMI_Handler = Default_Handler);
+PROVIDE(HardFault_Handler = Default_Handler);
+PROVIDE(MemManage_Handler = Default_Handler);
+PROVIDE(BusFault_Handler = Default_Handler);
+PROVIDE(UsageFault_Handler = Default_Handler);
+PROVIDE(SVC_Handler = Default_Handler);
+PROVIDE(DebugMon_Handler = Default_Handler);
+PROVIDE(PendSV_Handler = Default_Handler);
+PROVIDE(SysTick_Handler = Default_Handler);
+PROVIDE(WWDG_IRQHandler = Default_Handler);
+PROVIDE(PVD_IRQHandler = Default_Handler);
+PROVIDE(TAMPER_IRQHandler = Default_Handler);
+PROVIDE(RTC_IRQHandler = Default_Handler);
+PROVIDE(FLASH_IRQHandler = Default_Handler);
+PROVIDE(RCC_IRQHandler = Default_Handler);
+PROVIDE(EXTI0_IRQHandler = Default_Handler);
+PROVIDE(EXTI1_IRQHandler = Default_Handler);
+PROVIDE(EXTI2_IRQHandler = Default_Handler);
+PROVIDE(EXTI3_IRQHandler = Default_Handler);
+PROVIDE(EXTI4_IRQHandler = Default_Handler);
+PROVIDE(DMA1_Channel1_IRQHandler = Default_Handler);
+PROVIDE(DMA1_Channel2_IRQHandler = Default_Handler);
+PROVIDE(DMA1_Channel3_IRQHandler = Default_Handler);
+PROVIDE(DMA1_Channel4_IRQHandler = Default_Handler);
+PROVIDE(DMA1_Channel5_IRQHandler = Default_Handler);
+PROVIDE(DMA1_Channel6_IRQHandler = Default_Handler);
+PROVIDE(DMA1_Channel7_IRQHandler = Default_Handler);
+PROVIDE(ADC1_2_IRQHandler = Default_Handler);
+PROVIDE(USB_HP_CAN1_TX_IRQHandler = Default_Handler);
+PROVIDE(USB_LP_CAN1_RX0_IRQHandler = Default_Handler);
+PROVIDE(CAN1_RX1_IRQHandler = Default_Handler);
+PROVIDE(CAN1_SCE_IRQHandler = Default_Handler);
+PROVIDE(EXTI9_5_IRQHandler = Default_Handler);
+PROVIDE(TIM1_BRK_IRQHandler = Default_Handler);
+PROVIDE(TIM1_UP_IRQHandler = Default_Handler);
+PROVIDE(TIM1_TRG_COM_IRQHandler = Default_Handler);
+PROVIDE(TIM1_CC_IRQHandler = Default_Handler);
+PROVIDE(TIM2_IRQHandler = Default_Handler);
+PROVIDE(TIM3_IRQHandler = Default_Handler);
+PROVIDE(TIM4_IRQHandler = Default_Handler);
+PROVIDE(I2C1_EV_IRQHandler = Default_Handler);
+PROVIDE(I2C1_ER_IRQHandler = Default_Handler);
+PROVIDE(I2C2_EV_IRQHandler = Default_Handler);
+PROVIDE(I2C2_ER_IRQHandler = Default_Handler);
+PROVIDE(SPI1_IRQHandler = Default_Handler);
+PROVIDE(SPI2_IRQHandler = Default_Handler);
+PROVIDE(USART1_IRQHandler = Default_Handler);
+PROVIDE(USART2_IRQHandler = Default_Handler);
+PROVIDE(USART3_IRQHandler = Default_Handler);
+PROVIDE(EXTI15_10_IRQHandler = Default_Handler);
+PROVIDE(RTC_Alarm_IRQHandler = Default_Handler);
+PROVIDE(USBWakeUp_IRQHandler = Default_Handler);
