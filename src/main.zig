@@ -16,8 +16,6 @@ pub fn main() void {
     // Set PC13 high before enabling output to prevent LED from being on before we enter the loop.
     regs.GPIOC.BSRR.write(.{ .BS13 = 0b1 });
 
-    std.log.info("Hello, world!", .{});
-
     // SetPC13 to push-pull 2MHz output.
     regs.GPIOC.CRH.modify(.{ .CNF13 = 0b00, .MODE13 = 0b10 });
 
