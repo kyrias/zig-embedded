@@ -26,13 +26,13 @@ pub fn RegisterRW(comptime Read: type, comptime Write: type) type {
         }
 
         pub fn write(self: Self, value: Write) void {
-            const val = @bitCast(u32, value);
-            asm volatile (
-                \\STR R2, [R3]
-                :
-                : [val] "{r2}" (val),
-                  [dest] "{r3}" (self.raw_ptr),
-            );
+            // Forcing the alignment here is a workaround for stores through the volatile
+            // pointer generating multiple loads and stores.  This workaround isn't just  a
+            // nice-to-have to generate better code, it's necessary to get LLVM to generate code
+            // that can successfully modify MMIO registers that only accept whole-word writes.
+            // https://github.com/ziglang/zig/issues/8981#issuecomment-854911077
+            const aligned: Write align(4) = value;
+            self.raw_ptr.* = @ptrCast(*const u32, &aligned).*;
         }
 
         pub fn modify(self: Self, new_value: anytype) void {
@@ -52,12 +52,7 @@ pub fn RegisterRW(comptime Read: type, comptime Write: type) type {
         }
 
         pub fn write_raw(self: Self, value: u32) void {
-            asm volatile (
-                \\STR R2, [R3]
-                :
-                : [val] "{r2}" (value),
-                  [dest] "{r3}" (self.raw_ptr),
-            );
+            self.raw_ptr.* = value;
         }
 
         pub fn default_read_value(_: Self) Read {
