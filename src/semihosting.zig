@@ -84,7 +84,7 @@ pub fn sys_writec(char: u8) void {
 }
 
 /// Write a null-terminated string to the debugger output.
-pub fn sys_write0(str: []const u8) void {
+pub fn sys_write0(str: [:0]const u8) void {
     const arg = str.ptr;
     asm volatile (
         \\BKPT #0xAB
