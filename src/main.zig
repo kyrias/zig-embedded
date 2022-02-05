@@ -13,20 +13,23 @@ pub fn main() void {
     regs.RCC.APB2RSTR.modify(.{ .IOPCRST = 1 });
     regs.RCC.APB2RSTR.modify(.{ .IOPCRST = 0 });
 
-    regs.GPIOC.CRH.modify(.{ .CNF13 = 0b00, .MODE13 = 0b10 });
-    regs.GPIOC.BSRR.modify(.{ .BS13 = 0b1 });
+    // Set PC13 high before enabling output to prevent LED from being on before we enter the loop.
+    regs.GPIOC.BSRR.write(.{ .BS13 = 0b1 });
 
     std.log.info("Hello, world!", .{});
 
+    // SetPC13 to push-pull 2MHz output.
+    regs.GPIOC.CRH.modify(.{ .CNF13 = 0b00, .MODE13 = 0b10 });
+
     while (true) {
-        regs.GPIOC.BSRR.modify(.{ .BR13 = 0b1 });
+        regs.GPIOC.BSRR.write(.{ .BR13 = 0b1 });
 
         var i: usize = 0;
         while (i < 400000) : (i += 1) {
             asm volatile ("NOP");
         }
 
-        regs.GPIOC.BSRR.modify(.{ .BS13 = 0b1 });
+        regs.GPIOC.BSRR.write(.{ .BS13 = 0b1 });
 
         i = 0;
         while (i < 400000) : (i += 1) {
