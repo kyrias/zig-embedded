@@ -26,6 +26,6 @@ fn debug_writer(context: void, bytes: []const u8) !usize {
     // equivalent of a syscall, we just accept void and do nothing with it.
     _ = context;
 
-    semihosting.sys_write0(bytes);
+    _ = semihosting.sys_write(1, bytes);
     return bytes.len;
 }
