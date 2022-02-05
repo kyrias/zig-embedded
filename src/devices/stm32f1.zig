@@ -26,7 +26,13 @@ pub fn RegisterRW(comptime Read: type, comptime Write: type) type {
         }
 
         pub fn write(self: Self, value: Write) void {
-            self.raw_ptr.* = @bitCast(u32, value);
+            const val = @bitCast(u32, value);
+            asm volatile (
+                \\STR R2, [R3]
+                :
+                : [val] "{r2}" (val),
+                  [dest] "{r3}" (self.raw_ptr),
+            );
         }
 
         pub fn modify(self: Self, new_value: anytype) void {
@@ -46,7 +52,12 @@ pub fn RegisterRW(comptime Read: type, comptime Write: type) type {
         }
 
         pub fn write_raw(self: Self, value: u32) void {
-            self.raw_ptr.* = value;
+            asm volatile (
+                \\STR R2, [R3]
+                :
+                : [val] "{r2}" (value),
+                  [dest] "{r3}" (self.raw_ptr),
+            );
         }
 
         pub fn default_read_value(_: Self) Read {
