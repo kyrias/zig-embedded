@@ -22,11 +22,15 @@ pub fn main() void {
         regs.GPIOC.BSRR.modify(.{ .BR13 = 0b1 });
 
         var i: usize = 0;
-        while (i < 400000) : (i += 1) {}
+        while (i < 400000) : (i += 1) {
+            asm volatile ("NOP");
+        }
 
         regs.GPIOC.BSRR.modify(.{ .BS13 = 0b1 });
 
         i = 0;
-        while (i < 400000) : (i += 1) {}
+        while (i < 400000) : (i += 1) {
+            asm volatile ("NOP");
+        }
     }
 }
