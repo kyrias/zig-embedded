@@ -1,4 +1,4 @@
-INCLUDE ld/symbols.ld
+ENTRY(Reset_Handler)
 
 
 __ram_end = ORIGIN(RAM) + LENGTH(RAM);
