@@ -1,6 +1,6 @@
 const root = @import("root");
 
-const stm32f103xx = @import("startup/stm32f103xx.zig");
+const stm32f103xx = @import("stm32f103xx.zig");
 
 pub const Device = enum {
     STM32F103C8,

@@ -1,11 +1,14 @@
 const std = @import("std");
+const build_options = @import("build_options");
+const startup = @import("startup");
 
 const regs = @import("devices/stm32f1.zig");
 
 // The stdlib uses root.log for writing all log messages.
 pub const log = @import("log.zig").log;
 
-const VectorTable = @import("startup.zig").VectorTable;
+
+const VectorTable = startup.VectorTable;
 export const vector_table linksection(".vector_table") = VectorTable(main, .STM32F103C8).init(.{});
 
 pub fn main() void {

@@ -11,6 +11,11 @@ pub fn build(b: *std.build.Builder) void {
     const mode = b.standardReleaseOptions();
 
     const exe = b.addExecutable("main.elf", "src/main.zig");
+    exe.addPackage(.{
+        .name = "startup",
+        .path = .{ .path = "pkgs/startup/lib.zig" },
+    });
+
     exe.setTarget(target);
     exe.setBuildMode(mode);
     exe.setLinkerScriptPath(.{ .path = "ld/stm32f103c8.ld" });
