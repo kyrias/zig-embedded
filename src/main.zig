@@ -7,9 +7,9 @@ const regs = @import("devices/stm32f1.zig");
 // The stdlib uses root.log for writing all log messages.
 pub const log = @import("log.zig").log;
 
-
+const startup_device = @field(startup.Device, @tagName(build_options.device));
 const VectorTable = startup.VectorTable;
-export const vector_table linksection(".vector_table") = VectorTable(main, .STM32F103C8).init(.{});
+export const vector_table linksection(".vector_table") = VectorTable(main, startup_device).init(.{});
 
 pub fn main() void {
     regs.RCC.APB2ENR.modify(.{ .IOPCEN = 1 });
