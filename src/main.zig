@@ -4,8 +4,11 @@ const startup = @import("startup");
 
 const regs = @import("devices/stm32f1.zig");
 
-// The stdlib uses root.log for writing all log messages.
-pub const log = @import("log.zig").log;
+// stdlib hooks
+usingnamespace struct {
+    // The stdlib uses root.log for writing all log messages.
+    pub const log = @import("log.zig").log;
+};
 
 const startup_device = @field(startup.Device, @tagName(build_options.device));
 const VectorTable = startup.VectorTable;
