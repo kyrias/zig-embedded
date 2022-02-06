@@ -24,14 +24,14 @@ pub fn main() void {
 
         var i: usize = 0;
         while (i < 400000) : (i += 1) {
-            asm volatile ("NOP");
+            asm volatile ("");
         }
 
         regs.GPIOC.BSRR.write(.{ .BS13 = 0b1 });
 
         i = 0;
         while (i < 400000) : (i += 1) {
-            asm volatile ("NOP");
+            asm volatile ("");
         }
     }
 }
