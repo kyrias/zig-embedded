@@ -6,6 +6,7 @@ pub const SYS_CLOSE: usize = 0x02;
 pub const SYS_WRITEC: usize = 0x03;
 pub const SYS_WRITE0: usize = 0x04;
 pub const SYS_WRITE: usize = 0x05;
+pub const SYS_READC: usize = 0x07;
 
 pub const OpenMode = enum(u4) {
     r = 0,
@@ -119,4 +120,15 @@ pub fn sys_write(fd: u32, str: []const u8) usize {
     assert(ret == 0);
 
     return ret;
+}
+
+/// Read a byte from the debug console
+pub fn sys_readc() u8 {
+    const arg: usize = 0;
+    return asm volatile (
+        \\BKPT #0xAB
+        : [ret] "={r0}" (-> u8),
+        : [SYS_READC] "{r0}" (SYS_READC),
+          [arg] "{r1}" (arg),
+    );
 }
