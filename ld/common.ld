@@ -51,8 +51,8 @@ SECTIONS
 		__data_vma_start = . ;
 		*(.data .data.*)
 
-		. = ALIGN(4);
 		__data_vma_end = . ;
+		. = ALIGN(4);
 	} >RAM AT>FLASH
 
 	__data_lma_size = SIZEOF(.data);
@@ -70,9 +70,9 @@ SECTIONS
 		*(.bss*)
 		*(COMMON)
 
-		. = ALIGN(4);
 		__bss_end = . ;
-		__bss_size = SIZEOF(.data);
+		__bss_size = SIZEOF(.bss);
+		. = ALIGN(4);
 	} >RAM
 
 
