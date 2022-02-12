@@ -39,6 +39,10 @@ fn makeResetHandler(comptime entry_point: fn () void) fn () callconv(.AAPCS) voi
             for (bss[0..bss_size]) |*b| b.* = 0;
 
             main();
+
+            while (true) {
+                asm volatile ("WFI");
+            }
         }
     }.Reset_Handler;
 }
