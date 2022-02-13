@@ -24,7 +24,7 @@ usingnamespace struct {
 
 const startup_device = @field(startup.Device, @tagName(build_options.device));
 const VectorTable = startup.VectorTable;
-export const vector_table linksection(".vector_table") = VectorTable(main, startup_device).init(.{});
+export const _ linksection(".vector_table") = VectorTable(main, startup_device).init(.{});
 
 fn set_clock() void {
     // Set PLLMUL to x9, don't divide HSE before PLL, pass HSE into PLL, and APB1 to divide by 2.
