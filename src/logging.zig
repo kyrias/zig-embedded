@@ -1,9 +1,11 @@
 const std = @import("std");
 
+const loop = @import("loop.zig");
 const regs = @import("devices/stm32f1.zig");
-const semihosting = @import("semihosting.zig");
+const usart = @import("usart.zig");
 
-pub const writer = std.io.Writer(void, error{}, usart3_writer){ .context = {} };
+pub const ev_writer = std.io.Writer(void, error{}, usart.usart3_writer){ .context = {} };
+pub const raw_writer = std.io.Writer(void, error{}, raw_usart3_writer){ .context = {} };
 
 /// Implements the logger function used for all stdlib logging.
 pub fn log(
@@ -15,14 +17,14 @@ pub fn log(
     const level_txt = comptime message_level.asText();
     const prefix = if (scope == .default) ": " else "(" ++ @tagName(scope) ++ "): ";
 
-    try std.fmt.format(
-        writer,
-        level_txt ++ prefix ++ format ++ "\r\n",
-        args,
-    );
+    if (loop.in_event_loop) {
+        try std.fmt.format(ev_writer, level_txt ++ prefix ++ format ++ "\r\n", args);
+    } else {
+        try std.fmt.format(raw_writer, level_txt ++ prefix ++ format ++ "\r\n", args);
+    }
 }
 
-pub fn usart3_writer(context: void, bytes: []const u8) !usize {
+pub fn raw_usart3_writer(context: void, bytes: []const u8) !usize {
     // The Writer interface expects us to have a context type, which would
     // normally be something like a File.  Since we're just performing the
     // equivalent of a syscall, we just accept void and do nothing with it.

@@ -15,8 +15,7 @@ usingnamespace struct {
     pub fn panic(msg: []const u8, error_return_trace: ?*std.builtin.StackTrace) noreturn {
         _ = error_return_trace;
 
-        const writer = logging.writer;
-        std.fmt.format(writer, "panic: {s}\r\n", .{msg}) catch {};
+        std.fmt.format(logging.raw_writer, "panic: {s}\r\n", .{msg}) catch {};
 
         while (true) {
             asm volatile ("WFI");

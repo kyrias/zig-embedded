@@ -38,7 +38,7 @@ fn makeResetHandler(comptime entry_point: fn () void) fn () callconv(.AAPCS) voi
             const bss = @ptrCast([*]u8, &__bss_start);
             for (bss[0..bss_size]) |*b| b.* = 0;
 
-            main();
+            nosuspend main();
 
             while (true) {
                 asm volatile ("WFI");
