@@ -1,7 +1,10 @@
 const std = @import("std");
 
+const lock = @import("lock.zig");
 const loop = @import("loop.zig");
 const regs = @import("devices/stm32f1.zig");
+
+var usart3_lock: lock.Lock = .{ .state = .unlocked };
 
 pub const UsartOperation = struct {
     usart: enum {
@@ -90,6 +93,9 @@ pub fn usart3_writer(context: void, bytes: []const u8) !usize {
     // equivalent of a syscall, we just accept void and do nothing with it.
     _ = context;
     loop.yield();
+
+    usart3_lock.lock();
+    defer usart3_lock.unlock();
 
     for (bytes) |byte| {
         const operation = UsartOperation{
