@@ -114,7 +114,6 @@ pub fn sys_write(fd: u32, str: []const u8) usize {
         : [ret] "={r0}" (-> usize),
         : [SYS_WRITE] "{r0}" (SYS_WRITE),
           [arg] "{r1}" (arg),
-        : "r0"
     );
 
     assert(ret == 0);
