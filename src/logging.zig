@@ -35,3 +35,30 @@ pub fn usart3_writer(context: void, bytes: []const u8) !usize {
 
     return bytes.len;
 }
+
+pub fn configure_log_usart() void {
+    // USART3 on GPIOB
+    regs.RCC.APB1ENR.modify(.{ .USART3EN = 0b1 });
+    regs.RCC.APB2ENR.modify(.{ .IOPBEN = 0b1 });
+
+    // Reset USART3 and GPIOB
+    regs.RCC.APB1RSTR.modify(.{ .USART3RST = 0b1 });
+    regs.RCC.APB2RSTR.modify(.{ .IOPBRST = 0b1 });
+    regs.RCC.APB1RSTR.modify(.{ .USART3RST = 0b0 });
+    regs.RCC.APB2RSTR.modify(.{ .IOPBRST = 0b0 });
+
+    // PB10 TX output, alternate function push-pull
+    regs.GPIOB.CRH.modify(.{ .MODE10 = 0b01, .CNF10 = 0b10 });
+
+    // PB11 RX input, floating
+    regs.GPIOB.CRH.modify(.{ .MODE11 = 0b00, .CNF11 = 0b01 });
+
+    regs.USART3.CR1.modify(.{ .UE = 0b1 });
+
+    regs.USART3.BRR.write(.{ .DIV_Mantissa = 19, .DIV_Fraction = 8 });
+
+    regs.USART3.CR1.modify(.{
+        .TE = 0b1,
+        .RE = 0b1,
+    });
+}
