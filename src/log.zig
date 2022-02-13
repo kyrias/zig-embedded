@@ -3,6 +3,8 @@ const std = @import("std");
 const regs = @import("devices/stm32f1.zig");
 const semihosting = @import("semihosting.zig");
 
+pub const writer = std.io.Writer(void, error{}, usart3_writer){ .context = {} };
+
 /// Implements the logger function used for all stdlib logging.
 pub fn log(
     comptime message_level: std.log.Level,
@@ -12,7 +14,6 @@ pub fn log(
 ) void {
     const level_txt = comptime message_level.asText();
     const prefix = if (scope == .default) ": " else "(" ++ @tagName(scope) ++ "): ";
-    const writer = std.io.Writer(void, error{}, usart3_writer){ .context = {} };
 
     try std.fmt.format(
         writer,

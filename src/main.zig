@@ -8,6 +8,17 @@ const regs = @import("devices/stm32f1.zig");
 usingnamespace struct {
     // The stdlib uses root.log for writing all log messages.
     pub const log = @import("log.zig").log;
+
+    pub fn panic(msg: []const u8, error_return_trace: ?*std.builtin.StackTrace) noreturn {
+        _ = error_return_trace;
+
+        const writer = @import("log.zig").writer;
+        std.fmt.format(writer, "panic: {s}\r\n", .{msg}) catch {};
+
+        while (true) {
+            asm volatile ("WFI");
+        }
+    }
 };
 
 const startup_device = @field(startup.Device, @tagName(build_options.device));
