@@ -1,5 +1,7 @@
 const std = @import("std");
 
+const usart = @import("usart.zig");
+
 pub var loop: *Loop = undefined;
 pub var in_event_loop = false;
 
@@ -8,6 +10,7 @@ pub const QueueEntry = struct {
     frame: anyframe,
     data: union(enum) {
         none: void,
+        usart: *usart.UsartOperation,
     },
 };
 
@@ -27,12 +30,15 @@ pub fn yield() void {
 
 pub const Loop = struct {
     completion_handler: CompletionHandler,
+    usart_processor: usart.UsartProcessor,
 
     pub fn init(self: *Loop) void {
         self.* = Loop{
             .completion_handler = undefined,
+            .usart_processor = undefined,
         };
         self.completion_handler.init();
+        self.usart_processor.init();
 
         loop = self;
     }
@@ -46,10 +52,13 @@ pub const Loop = struct {
         in_event_loop = true;
 
         while (true) {
-            // First dispatch any completed async operations
+            // First dispatch any already completed async operations.
             self.completion_handler.dispatch();
 
-            const done = self.completion_handler.isDone();
+            // Check if there are any USART operations that are ready to be executed.
+            self.usart_processor.dispatch();
+
+            const done = self.completion_handler.isDone() and self.usart_processor.isDone();
             if (done) {
                 break;
             }
