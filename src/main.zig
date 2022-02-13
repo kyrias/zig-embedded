@@ -2,6 +2,7 @@ const std = @import("std");
 const build_options = @import("build_options");
 const startup = @import("startup");
 
+const interrupts = @import("interrupts.zig");
 const regs = @import("devices/stm32f1.zig");
 
 // stdlib hooks
@@ -78,8 +79,12 @@ fn configure_log_usart() void {
 
 pub fn main() void {
     set_clock();
+
     configure_log_usart();
     std.log.info("Configured log USART", .{});
+
+    interrupts.init();
+    std.log.info("Performed interrupt initialization", .{});
 
     regs.RCC.APB2ENR.modify(.{ .IOPCEN = 1 });
     regs.RCC.APB2RSTR.modify(.{ .IOPCRST = 1 });
