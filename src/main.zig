@@ -3,17 +3,18 @@ const build_options = @import("build_options");
 const startup = @import("startup");
 
 const interrupts = @import("interrupts.zig");
+const logging = @import("logging.zig");
 const regs = @import("devices/stm32f1.zig");
 
 // stdlib hooks
 usingnamespace struct {
     // The stdlib uses root.log for writing all log messages.
-    pub const log = @import("log.zig").log;
+    pub const log = logging.log;
 
     pub fn panic(msg: []const u8, error_return_trace: ?*std.builtin.StackTrace) noreturn {
         _ = error_return_trace;
 
-        const writer = @import("log.zig").writer;
+        const writer = logging.writer;
         std.fmt.format(writer, "panic: {s}\r\n", .{msg}) catch {};
 
         while (true) {
